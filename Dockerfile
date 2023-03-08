@@ -9,6 +9,14 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+RUN npm build
 
-ENTRYPOINT [ "npm", "start" ]
+FROM nginx:latest
+
+WORKDIR /app/build
+RUN mv index.html 200.html
+
+WORKDIR /app
+
+COPY ./etc/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder ./app/build /usr/share/nginx/html
