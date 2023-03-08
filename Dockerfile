@@ -8,8 +8,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-COPY ./app/build/index.html ./app/build/200.html
-
+#COPY ./app/build/index.html ./app/build/200.html
 
 FROM nginx:latest
 
