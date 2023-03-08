@@ -15,6 +15,9 @@ const FileInfo = ({ file }: { file: File }) => {
             {file.fileType === fileType.UnknowFileType && (
               <DownloadButton file={file} disabled={true} />
             )}
+            {file.fileType !== fileType.UnknowFileType && (
+              <DownloadButton file={file} disabled={false} />
+            )}
 
             <ShareButton url={window.location.href} />
             <LinkContainer to={`/api/manager/`}>
