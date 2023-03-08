@@ -27,7 +27,6 @@ const fetchManager = async (
 
 const ManagerView = () => {
   const params = useParams();
-  console.log(params);
 
   const {
     isLoading,

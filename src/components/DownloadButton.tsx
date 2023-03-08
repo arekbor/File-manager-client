@@ -16,7 +16,6 @@ const DownloadButton = ({
       responseType: "blob",
     })
       .then(({ data }) => {
-        console.log(file.pathDownload);
         const downloadUrl = window.URL.createObjectURL(new Blob([data]));
         const link = document.createElement("a");
         link.href = downloadUrl;
@@ -26,7 +25,7 @@ const DownloadButton = ({
         link.remove();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
