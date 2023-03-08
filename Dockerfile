@@ -1,18 +1,19 @@
-FROM node:18.14.1 AS builder
+FROM nginx
 
-ENV NODE_ENV production
+WORKDIR /usr/share/react
 
-WORKDIR /app
+RUN curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+RUN apt-get update
+RUN apt-get install -y nodejs
 
-COPY ./package.json ./
-RUN npm install --force
+COPY package*.json ./
+
+RUN npm install
 
 COPY . .
 
 RUN npm run build
 
-FROM nginx
+RUN rm -r /usr/share/nginx/html/*
 
-COPY --from=builder /app/build /usr/share/nginx/html
-
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN cp -a build/. /usr/share/nginx/html
