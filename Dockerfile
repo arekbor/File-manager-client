@@ -5,13 +5,11 @@ ENV NODE_ENV production
 WORKDIR /app
 
 COPY ./package.json ./
-RUN npm install
+RUN npm install --force
 
 COPY . .
 
 RUN npm run build
-
-RUN npm i --save-dev @types/react-router-bootstrap
 
 FROM nginx
 
