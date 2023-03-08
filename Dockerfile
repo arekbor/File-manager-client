@@ -1,11 +1,9 @@
 FROM node:18.14.1 AS builder
 
-ENV NODE_ENV production
-
 WORKDIR /app
 
 COPY ./package*.json ./
-RUN npm install --production
+RUN npm install
 
 COPY . .
 
