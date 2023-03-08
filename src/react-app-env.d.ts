@@ -5,3 +5,4 @@ declare module "*.jpeg";
 declare module "*.jpg";
 
 declare module "react-router-bootstrap";
+declare module "react-syntax-highlighter";
