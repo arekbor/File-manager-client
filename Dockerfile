@@ -5,11 +5,11 @@ ENV NODE_ENV production
 WORKDIR /app
 
 COPY ./package*.json ./
-RUN npm install
+RUN npm install --production
 
 COPY . .
 
-RUN npm build
+RUN npm run build
 
 FROM nginx:latest
 
@@ -20,3 +20,5 @@ WORKDIR /app
 
 COPY ./etc/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder ./app/build /usr/share/nginx/html
+
+EXPOSE 80
