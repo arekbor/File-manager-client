@@ -1,19 +1,14 @@
-FROM nginx
+FROM node:18.14.1 AS builder
 
-WORKDIR /usr/share/react
+ENV NODE_ENV production
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get update
-RUN apt-get install -y nodejs
+WORKDIR /app
 
-COPY package*.json ./
-
+COPY ./package*.json ./
 RUN npm install
 
 COPY . .
 
-RUN npm run build
+EXPOSE 3000
 
-RUN rm -r /usr/share/nginx/html/*
-
-RUN cp -a build/. /usr/share/nginx/html
+ENTRYPOINT [ "npm", "start" ]
