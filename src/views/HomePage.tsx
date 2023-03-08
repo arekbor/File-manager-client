@@ -5,7 +5,6 @@ import img2 from "../static/image2.jpeg";
 import img3 from "../static/image3.jpeg";
 import img4 from "../static/image4.jpeg";
 import img5 from "../static/image5.jpeg";
-import "./index.css";
 
 const HomePage = () => {
   const images: string[] = [img1, img2, img3, img4, img5];
