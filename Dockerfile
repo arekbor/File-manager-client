@@ -14,7 +14,7 @@ RUN npm run build
 FROM nginx:latest
 
 WORKDIR /app/build
-RUN mv index.html 200.html
+RUN cp ./index.html 200.html
 
 WORKDIR /app
 
