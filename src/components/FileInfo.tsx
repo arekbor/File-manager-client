@@ -2,7 +2,8 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { File, fileType } from "../interfaces/file";
 import DownloadButton from "./DownloadButton";
 import ShareButton from "./ShareButton";
-import { LinkContainer } from "react-router-bootstrap";
+import MainPageButton from "./MainPageButton";
+import HomePageButton from "./HomePageButton";
 
 const FileInfo = ({ file }: { file: File }) => {
   return (
@@ -20,9 +21,8 @@ const FileInfo = ({ file }: { file: File }) => {
             )}
 
             <ShareButton url={window.location.href} />
-            <LinkContainer to={`/api/manager/`}>
-              <Button size="sm">Main page</Button>
-            </LinkContainer>
+            <MainPageButton />
+            <HomePageButton />
           </div>
         </Col>
       </Row>

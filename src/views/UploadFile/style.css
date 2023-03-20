@@ -1,0 +1,26 @@
+.dropFiles {
+  color: rgb(212, 90, 212);
+  text-align: center;
+  font-size: 25px;
+  height: max-content;
+  margin-top: 25px;
+  padding: 100px;
+  border: dotted rgb(228, 225, 225) 2px;
+}
+.dropFiles:hover {
+  color: rgb(219, 124, 219);
+  font-weight: 100;
+  cursor: pointer;
+}
+
+.dropFiles:-moz-drag-over {
+  color: rgb(219, 124, 219);
+  font-weight: 100;
+  cursor: pointer;
+  border: solid black 5px;
+}
+
+.progress-bar {
+  margin-top: 10px;
+  padding: 10px;
+}

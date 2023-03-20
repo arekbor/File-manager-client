@@ -1,10 +1,10 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import img1 from "../static/image.jpeg";
-import img2 from "../static/image2.jpeg";
-import img3 from "../static/image3.jpeg";
-import img4 from "../static/image4.jpeg";
-import img5 from "../static/image5.jpeg";
+import img1 from "../../static/image.jpeg";
+import img2 from "../../static/image2.jpeg";
+import img3 from "../../static/image3.jpeg";
+import img4 from "../../static/image4.jpeg";
+import img5 from "../../static/image5.jpeg";
 
 const HomePage = () => {
   const images: string[] = [img1, img2, img3, img4, img5];
@@ -27,6 +27,10 @@ const HomePage = () => {
         >
           <LinkContainer to={`/api/manager/`} className={"mt-4"}>
             <Button size="sm">File manager</Button>
+          </LinkContainer>
+
+          <LinkContainer to={`/upload`} className={"mt-4"}>
+            <Button size="sm">Upload files</Button>
           </LinkContainer>
         </Col>
       </Row>
