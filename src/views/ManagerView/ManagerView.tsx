@@ -14,6 +14,8 @@ import Picture from "../../components/Picture";
 import "./style.css";
 import MainPageButton from "../../components/MainPageButton";
 import HomePageButton from "../../components/HomePageButton";
+import { Folder } from "react-bootstrap-icons";
+import Icon from "../../components/Icon";
 
 const fetchManager = async (
   path: string | undefined
@@ -74,7 +76,12 @@ const ManagerView = () => {
               {data.map((file) => (
                 <tr key={file.id}>
                   <LinkContainer to={`${file.pathFile}`}>
-                    <td className="file-name">{file.fileName}</td>
+                    <td className="file-name">
+                      <small>
+                        <Icon file={file} />
+                      </small>{" "}
+                      {file.fileName}
+                    </td>
                   </LinkContainer>
                   <td>{file.size}</td>
                 </tr>
