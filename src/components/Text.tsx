@@ -20,7 +20,8 @@ const Text = ({ file }: { file: File }) => {
     });
   }, []);
 
-  
+  console.log(text);
+
   return (
     <div>
       <FileInfo file={file} />

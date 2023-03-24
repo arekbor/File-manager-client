@@ -7,7 +7,7 @@ import "./style.css";
 import { FileEarmark } from "react-bootstrap-icons";
 import MainPageButton from "../../components/MainPageButton";
 import HomePageButton from "../../components/HomePageButton";
-import { setTimeout } from "timers/promises";
+import axios, { AxiosProgressEvent } from "axios";
 
 const UploadFile = () => {
   const [progress, setProgress] = useState<number>(0);
@@ -15,6 +15,7 @@ const UploadFile = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [showText, setShowText] = useState<string>("");
   const [disableProgress, setDisableProgress] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   if (progress >= 100) {
     window.setTimeout(() => {
@@ -36,22 +37,18 @@ const UploadFile = () => {
       formData.append("file", file);
     });
 
-    try {
-      const res = await api.post("/api/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        onUploadProgress: (progressEvent) => {
-          if (progressEvent.total) {
-            setProgress(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            );
-          }
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    await api.post("/api/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          setProgress(
+            Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          );
+        }
+      },
+    });
   };
 
   return (
@@ -85,6 +82,7 @@ const UploadFile = () => {
             <ProgressBar completed={progress} customLabel={showText} />
           )}
         </div>
+        {error && <div className="text-danger">{error}</div>}
       </Row>
     </Container>
   );
