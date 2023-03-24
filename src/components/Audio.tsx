@@ -1,8 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { File } from "../interfaces/file";
 import "react-h5-audio-player/lib/styles.css";
-import AudioPlayer from "react-h5-audio-player";
 import FileInfo from "./FileInfo";
+import ReactAudioPlayer from "react-audio-player";
 
 const Audio = ({ file }: { file: File }) => {
   return (
@@ -11,7 +11,12 @@ const Audio = ({ file }: { file: File }) => {
       <Container>
         <Row>
           <Col className="mt-2">
-            <AudioPlayer className="mt-5" autoPlay src={`${file.streamPath}`} />
+            <ReactAudioPlayer
+              src={`${file.streamPath}`}
+              autoPlay
+              controls
+              loop
+            />
           </Col>
         </Row>
       </Container>
