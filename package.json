@@ -21,7 +21,6 @@
     "react-bootstrap-icons": "^1.10.2",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-h5-audio-player": "^3.8.6",
     "react-pdf": "^6.2.2",
     "react-progressbar": "^15.4.1",
     "react-query": "^3.39.3",
@@ -30,6 +29,7 @@
     "react-scripts": "^5.0.1",
     "react-spring": "^9.7.1",
     "react-syntax-highlighter": "^15.5.0",
+    "react-video-players": "^0.1.11",
     "stream": "^0.0.2",
     "timers": "^0.1.1",
     "typescript": "^4.9.5",
@@ -64,6 +64,7 @@
     "@types/react-pdf": "^6.2.0",
     "@types/react-router-bootstrap": "^0.26.0",
     "@types/react-syntax-highlighter": "^15.5.6",
+    "@types/video-react": "^0.15.1",
     "eslint-plugin-unused-imports": "^2.0.0"
   }
 }

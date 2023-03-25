@@ -5,7 +5,6 @@ import FileInfo from "./FileInfo";
 const Picture = ({ file }: { file: File }) => {
   return (
     <div>
-      <FileInfo file={file} />
       <Container>
         <Row>
           <Col className="mt-2 text-center">

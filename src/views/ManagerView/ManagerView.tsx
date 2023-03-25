@@ -16,6 +16,8 @@ import MainPageButton from "../../components/MainPageButton";
 import HomePageButton from "../../components/HomePageButton";
 import { Folder } from "react-bootstrap-icons";
 import Icon from "../../components/Icon";
+import Video from "../../components/Video";
+import FileFrame from "../../components/FileFrame";
 
 const fetchManager = async (
   path: string | undefined
@@ -93,18 +95,7 @@ const ManagerView = () => {
     );
   }
   if (data && data.streamPath && !data.pathFile) {
-    if (data.fileType === fileType.AudioFileType) {
-      return <Audio file={data} />;
-    }
-    if (data.fileType === fileType.TextFileType) {
-      return <Text file={data} />;
-    }
-    if (data.fileType === fileType.ImageFileType) {
-      return <Picture file={data} />;
-    }
-    if (data.fileType === fileType.UnknowFileType) {
-      return <Unknow file={data} />;
-    }
+    return <FileFrame file={data} />;
   }
   return <div>Nothing to response...</div>;
 };

@@ -24,11 +24,10 @@ const Text = ({ file }: { file: File }) => {
 
   return (
     <div>
-      <FileInfo file={file} />
       <Container>
         <Row>
           <Col className="mt-2">
-            <div className="mt-5">
+            <div>
               <Button
                 size="sm"
                 onClick={() => handleChangeLanguage({ lang: "json" })}
