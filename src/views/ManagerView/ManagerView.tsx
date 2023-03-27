@@ -18,6 +18,7 @@ import { Folder } from "react-bootstrap-icons";
 import Icon from "../../components/Icon";
 import Video from "../../components/Video";
 import FileFrame from "../../components/FileFrame";
+import Loader from "../../components/loader/loader";
 
 const fetchManager = async (
   path: string | undefined
@@ -48,13 +49,7 @@ const ManagerView = () => {
   });
 
   if (isLoading) {
-    return (
-      <Container>
-        <Row>
-          <span>Loading...</span>
-        </Row>
-      </Container>
-    );
+    return <Loader />;
   }
 
   if (isError) {

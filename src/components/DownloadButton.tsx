@@ -1,6 +1,8 @@
-import { Button } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { File } from "../interfaces/file";
 import api from "../utils/api";
+import Loader from "./loader/loader";
 
 const DownloadButton = ({
   file,
@@ -9,7 +11,9 @@ const DownloadButton = ({
   file: File;
   disabled: boolean;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleDownload = () => {
+    setIsLoading(true);
     api({
       method: "get",
       url: `${file.pathDownload}`,
@@ -26,8 +30,14 @@ const DownloadButton = ({
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Button size="sm" onClick={handleDownload} disabled={disabled}>
