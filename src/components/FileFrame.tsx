@@ -8,8 +8,13 @@ import Text from "./Text";
 import Picture from "./Picture";
 import Video from "./Video";
 import Unknow from "./Unknow";
+import CSS from "csstype";
 
 const FileFrame = ({ file }: { file: File }) => {
+  const paddingStyle: CSS.Properties = {
+    padding: "35px",
+  };
+
   const [show, setShow] = useState(true);
   const handleHide = () => {
     setShow(false);
@@ -25,7 +30,7 @@ const FileFrame = ({ file }: { file: File }) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Row>
+            <Row style={paddingStyle}>
               {file.fileType === fileType.AudioFileType && (
                 <Audio file={file} />
               )}

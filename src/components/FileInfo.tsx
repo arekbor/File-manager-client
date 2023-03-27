@@ -4,14 +4,24 @@ import DownloadButton from "./DownloadButton";
 import ShareButton from "./ShareButton";
 import MainPageButton from "./MainPageButton";
 import HomePageButton from "./HomePageButton";
+import CSS from "csstype";
+
+const textStyle: CSS.Properties = {
+  fontSize: "small",
+  padding: "5px",
+};
 
 const FileInfo = ({ file }: { file: File }) => {
   return (
     <Container>
       <Row>
         <Col className="mt-3">
-          <div>{file.fileName}</div>
-          <div>{file.size}</div>
+          <div style={textStyle}>
+            <i>{file.fileName}</i>
+          </div>
+          <div style={textStyle}>
+            <b>{file.size}</b>
+          </div>
           <div>
             {file.fileType === fileType.UnknowFileType && (
               <DownloadButton file={file} disabled={true} />
