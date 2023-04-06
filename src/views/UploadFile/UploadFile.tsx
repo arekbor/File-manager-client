@@ -1,21 +1,52 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Dropzone from "react-dropzone";
 import ProgressBar from "@ramonak/react-progress-bar";
 import api from "../../utils/api";
-import { Container, Row } from "react-bootstrap";
+import {
+  Container,
+  FormGroup,
+  FormLabel,
+  FormSelect,
+  Row,
+} from "react-bootstrap";
 import "./style.css";
 import { FileEarmark } from "react-bootstrap-icons";
 import MainPageButton from "../../components/MainPageButton";
 import HomePageButton from "../../components/HomePageButton";
-import axios, { AxiosProgressEvent } from "axios";
+import { AxiosError } from "axios";
+import { useQuery, UseQueryResult } from "react-query";
+import Loader from "../../components/loader/loader";
+import Error from "../../components/Error";
+
+const fetchFolderNames = async (): Promise<string[]> => {
+  const res = await api<string[]>({
+    method: "get",
+    url: "/api/folderNames",
+  });
+  if (res.status === 200) {
+    return res.data;
+  }
+  throw new AxiosError(`error, status: ${res.status}`);
+};
 
 const UploadFile = () => {
+  const {
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+    data,
+  }: UseQueryResult<string[], AxiosError<string, any>> = useQuery<
+    string[],
+    AxiosError<string, any>
+  >(["folderNames"], () => fetchFolderNames());
+
   const [progress, setProgress] = useState<number>(0);
   const [showProgress, setShowProgress] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
   const [showText, setShowText] = useState<string>("");
   const [disableProgress, setDisableProgress] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [folder, setFolder] = useState<string | undefined>("root");
 
   if (progress >= 100) {
     window.setTimeout(() => {
@@ -33,9 +64,15 @@ const UploadFile = () => {
 
     setFiles([...files, ...acceptedFiles]);
     const formData = new FormData();
-    acceptedFiles.forEach((file) => {
-      formData.append("file", file);
-    });
+
+    if (folder) {
+      acceptedFiles.forEach((file) => {
+        formData.append("file", file);
+        formData.append("folderName", folder);
+      });
+    } else {
+      throw "error while preparing form!";
+    }
 
     await api.post("/api/upload", formData, {
       headers: {
@@ -51,41 +88,63 @@ const UploadFile = () => {
     });
   };
 
-  return (
-    <Container className="mt-3">
-      <MainPageButton />
-      <HomePageButton />
-      <Row>
-        <div>
-          <Dropzone
-            onDrop={handleDrop}
-            disabled={disableProgress}
-            autoFocus={true}
-          >
-            {({ getRootProps, getInputProps }) => (
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <div className="dropFiles">
-                  <div>
-                    Przeciągnij i upuść plik lub kliknij, aby wybrać plik
-                  </div>
-                  <div>
-                    <FileEarmark size={35} />
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (isError) {
+    return <Error error={error} />;
+  }
+  if (data) {
+    return (
+      <Container className="mt-3">
+        <MainPageButton />
+        <HomePageButton />
+        <Row>
+          <div>
+            <FormGroup>
+              <FormLabel>Wybierz miejsce docelowe</FormLabel>
+              <FormSelect
+                onChange={(e) => {
+                  setFolder(e.currentTarget.value);
+                }}
+              >
+                {data.map((folderName, key) => (
+                  <option key={key} value={folderName}>
+                    {folderName}
+                  </option>
+                ))}
+              </FormSelect>
+            </FormGroup>
+            <Dropzone
+              onDrop={handleDrop}
+              disabled={disableProgress}
+              autoFocus={true}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <div className="dropFiles">
+                    <div>
+                      Przeciągnij i upuść plik lub kliknij, aby wybrać plik
+                    </div>
+                    <div>
+                      <FileEarmark size={35} />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+            </Dropzone>
+          </div>
+          <div className="progress-bar">
+            {showProgress && (
+              <ProgressBar completed={progress} customLabel={showText} />
             )}
-          </Dropzone>
-        </div>
-        <div className="progress-bar">
-          {showProgress && (
-            <ProgressBar completed={progress} customLabel={showText} />
-          )}
-        </div>
-        {error && <div className="text-danger">{error}</div>}
-      </Row>
-    </Container>
-  );
+          </div>
+        </Row>
+      </Container>
+    );
+  }
+  return <div>Nothing to response...</div>;
 };
 
 export default UploadFile;

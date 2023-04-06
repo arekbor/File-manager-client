@@ -18,7 +18,10 @@ const FileFrame = ({ file }: { file: File }) => {
   const [show, setShow] = useState(true);
   const handleHide = () => {
     setShow(false);
-    window.history.back();
+    const url = window.location.origin + "/api/manager/";
+    if (url) {
+      window.location.replace(url);
+    }
   };
   return (
     <div>

@@ -5,12 +5,13 @@
   height: max-content;
   margin-top: 25px;
   padding: 100px;
-  border: dotted rgb(228, 225, 225) 2px;
+  border: dotted rgb(228, 225, 225) 3px;
 }
 .dropFiles:hover {
   color: rgb(219, 124, 219);
   font-weight: 100;
   cursor: pointer;
+  border: solid rgb(228, 225, 225) 1px;
 }
 
 .dropFiles:-moz-drag-over {
