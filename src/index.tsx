@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <QueryClientProvider client={reactQueryClient}>
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/*" element={<ManagerView />} />
