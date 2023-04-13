@@ -1,9 +1,9 @@
 import ReactDOM from "react-dom/client";
 import { QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reactQueryClient from "./utils/reactQueryClient";
 import ManagerView from "./views/ManagerView/ManagerView";
-import "./bootstrap.min.css";
+import "./styles/bootstrap.min.css";
 import HomePage from "./views/HomePage/HomePage";
 import UploadFile from "./views/UploadFile/UploadFile";
 

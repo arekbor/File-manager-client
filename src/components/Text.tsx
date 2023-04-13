@@ -4,7 +4,6 @@ import { File } from "../interfaces/file";
 import api from "../utils/api";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import FileInfo from "./FileInfo";
 
 const Text = ({ file }: { file: File }) => {
   const [text, setText] = useState("");

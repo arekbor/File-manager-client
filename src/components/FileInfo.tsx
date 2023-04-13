@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { File, fileType } from "../interfaces/file";
 import DownloadButton from "./DownloadButton";
 import ShareButton from "./ShareButton";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { File } from "../interfaces/file";
 import api from "../utils/api";
 import Loader from "./loader/loader";
