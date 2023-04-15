@@ -9,6 +9,7 @@ import Picture from "./Picture";
 import Video from "./Video";
 import Unknow from "./Unknow";
 import CSS from "csstype";
+import Archive from "./Archive";
 
 const FileFrame = ({ file }: { file: File }) => {
   const paddingStyle: CSS.Properties = {
@@ -37,6 +38,7 @@ const FileFrame = ({ file }: { file: File }) => {
               {file.fileType === fileType.AudioFileType && (
                 <Audio file={file} />
               )}
+
               {file.fileType === fileType.TextFileType && <Text file={file} />}
 
               {file.fileType === fileType.ImageFileType && (
@@ -45,6 +47,10 @@ const FileFrame = ({ file }: { file: File }) => {
 
               {file.fileType === fileType.VideoFileType && (
                 <Video file={file} />
+              )}
+
+              {file.fileType === fileType.ArchiveFileType && (
+                <Archive></Archive>
               )}
 
               {file.fileType === fileType.UnknowFileType && (

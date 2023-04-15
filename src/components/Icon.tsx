@@ -1,4 +1,5 @@
 import {
+  Archive,
   BoxSeam,
   CameraVideo,
   CardImage,
@@ -20,6 +21,8 @@ const Icon = ({ file }: { file: File }) => {
       return <FileEarmarkRichtext />;
     case fileType.VideoFileType:
       return <CameraVideo />;
+    case fileType.ArchiveFileType:
+      return <Archive />;
     case fileType.UnknowFileType:
       return <BoxSeam />;
   }

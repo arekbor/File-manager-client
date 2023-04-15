@@ -5,6 +5,7 @@ export enum fileType {
   TextFileType,
   ImageFileType,
   VideoFileType,
+  ArchiveFileType,
 }
 
 export interface File {
