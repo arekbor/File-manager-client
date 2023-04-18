@@ -3,7 +3,11 @@ import { useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-const Error = ({ error }: { error: AxiosError<string, any> | undefined }) => {
+const Error = ({
+  error,
+}: {
+  error: AxiosError<string, any> | undefined | null;
+}) => {
   const [show, setShow] = useState(true);
   const handleHide = () => {
     setShow(false);
