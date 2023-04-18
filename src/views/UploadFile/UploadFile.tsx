@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Dropzone from "react-dropzone";
 import ProgressBar from "@ramonak/react-progress-bar";
 import api from "../../utils/api";
@@ -14,32 +14,50 @@ import { FileEarmark } from "react-bootstrap-icons";
 import MainPageButton from "../../components/MainPageButton";
 import HomePageButton from "../../components/HomePageButton";
 import { AxiosError } from "axios";
-import { useQuery, UseQueryResult } from "react-query";
-import Loader from "../../components/loader/loader";
+import { useQueries, UseQueryResult } from "react-query";
 import Error from "../../components/Error";
 
-const fetchFolderNames = async (): Promise<string[]> => {
-  const res = await api<string[]>({
-    method: "get",
-    url: "/api/folderNames",
-  });
-  if (res.status === 200) {
-    return res.data;
-  }
-  throw new AxiosError(`error, status: ${res.status}`);
-};
+import ReCAPTCHA from "react-google-recaptcha";
+
+type QueryResults = [
+  UseQueryResult<string[], AxiosError<string, any>>,
+  UseQueryResult<void, AxiosError<string, any>>
+];
 
 const UploadFile = () => {
-  const {
-    isSuccess,
-    isLoading,
-    isError,
-    error,
-    data,
-  }: UseQueryResult<string[], AxiosError<string, any>> = useQuery<
-    string[],
-    AxiosError<string, any>
-  >(["folderNames"], () => fetchFolderNames());
+  const fetchFolderNames = async (): Promise<string[]> => {
+    const res = await api<string[]>({
+      method: "get",
+      url: "/api/folderNames",
+    });
+    if (res.status === 200) {
+      return res.data;
+    }
+    throw new AxiosError(`error, status: ${res.status}`);
+  };
+
+  const fetchUploadFile = async (
+    formUpload: FormData | undefined
+  ): Promise<void> => {
+    console.log("form upload: ", formUpload);
+    const res = await api({
+      method: "post",
+      url: "/api/upload",
+      data: formUpload,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (event) => {
+        if (event.total) {
+          setProgress(Math.round((event.loaded * 100) / event.total));
+        }
+      },
+    });
+    if (res.status === 200) {
+      return res.data;
+    }
+    throw new AxiosError(`error, status: ${res.status}`);
+  };
 
   const [progress, setProgress] = useState<number>(0);
   const [showProgress, setShowProgress] = useState<boolean>(false);
@@ -47,6 +65,37 @@ const UploadFile = () => {
   const [showText, setShowText] = useState<string>("");
   const [disableProgress, setDisableProgress] = useState<boolean>(false);
   const [folder, setFolder] = useState<string | undefined>("root");
+  const [captchaToken, setCaptchaToken] = useState<string | null>("");
+  const [uploadForm, setUploadForm] = useState<FormData>();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  const handleChangeCaptchaToken = (value: string | null) => {
+    setCaptchaToken(value);
+  };
+
+  const queries = useQueries<QueryResults>([
+    {
+      queryKey: "folderNames",
+      queryFn: fetchFolderNames,
+    },
+    {
+      queryKey: ["uploadForm", uploadForm],
+      queryFn: async () => {
+        await fetchUploadFile(uploadForm);
+      },
+      enabled: !!uploadForm,
+    },
+  ]);
+
+  const [folderNames, uploadFile] = queries;
+
+  const {
+    data: dataFolderNames,
+    isError: isErrorFolderNames,
+    error: errorFolderNames,
+  } = folderNames;
+
+  const { isError: isErrorUploadFile, error: errorUploadFile } = uploadFile;
 
   if (progress >= 100) {
     window.setTimeout(() => {
@@ -54,6 +103,7 @@ const UploadFile = () => {
       window.setTimeout(() => {
         setShowProgress(false);
         setDisableProgress(false);
+        handleResetCaptcha();
       }, 1000);
     }, 2000);
   }
@@ -65,36 +115,28 @@ const UploadFile = () => {
     setFiles([...files, ...acceptedFiles]);
     const formData = new FormData();
 
-    if (folder) {
+    if (folder && captchaToken) {
       acceptedFiles.forEach((file) => {
         formData.append("file", file);
         formData.append("folderName", folder);
+        formData.append("captcha", captchaToken);
       });
-    } else {
-      throw "error while preparing form!";
     }
-
-    await api.post("/api/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress: (progressEvent) => {
-        if (progressEvent.total) {
-          setProgress(
-            Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          );
-        }
-      },
-    });
+    setUploadForm(formData);
   };
 
-  if (isLoading) {
-    return <Loader />;
+  const handleResetCaptcha = () => {
+    recaptchaRef.current?.reset();
+  };
+
+  if (isErrorFolderNames) {
+    return <Error error={errorFolderNames} />;
   }
-  if (isError) {
-    return <Error error={error} />;
+  if (isErrorUploadFile) {
+    return <Error error={errorUploadFile} />;
   }
-  if (data) {
+
+  if (dataFolderNames) {
     return (
       <Container className="mt-3">
         <MainPageButton />
@@ -108,12 +150,27 @@ const UploadFile = () => {
                   setFolder(e.currentTarget.value);
                 }}
               >
-                {data.map((folderName, key) => (
+                {dataFolderNames.map((folderName, key) => (
                   <option key={key} value={folderName}>
                     {folderName}
                   </option>
                 ))}
               </FormSelect>
+              <ReCAPTCHA
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "20px",
+                }}
+                ref={recaptchaRef}
+                sitekey="6LfK65olAAAAABrxfCcEmWdxa-g4pZRRseFmNPCF"
+                onChange={(value) => {
+                  handleChangeCaptchaToken(value);
+                }}
+                onExpired={() => {
+                  handleResetCaptcha();
+                }}
+              />
             </FormGroup>
             <Dropzone
               onDrop={handleDrop}
