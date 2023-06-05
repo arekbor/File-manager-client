@@ -30,6 +30,7 @@
     "react-scripts": "^5.0.1",
     "react-spring": "^9.7.1",
     "react-syntax-highlighter": "^15.5.0",
+    "react-type-animation": "^3.0.1",
     "react-video-players": "^0.1.11",
     "stream": "^0.0.2",
     "timers": "^0.1.1",
