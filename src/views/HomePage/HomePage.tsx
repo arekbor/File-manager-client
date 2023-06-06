@@ -30,7 +30,7 @@ const HomePage = () => {
               1000,
               "Chmura obliczeniowa, zwana także 'cloud computing', to model dostarczania usług komputerowych przez Internet. Zamiast korzystać z lokalnych zasobów, takich jak serwery i pamięć, dane i aplikacje są przechowywane i przetwarzane na zdalnych serwerach w chmurze. To pozwala użytkownikom na elastyczne korzystanie z zasobów w zależności od potrzeb, bez konieczności inwestowania w infrastrukturę IT.",
             ]}
-            wrapper="div"
+            wrapper="h1"
             cursor={false}
             repeat={Infinity}
             style={{
@@ -42,6 +42,8 @@ const HomePage = () => {
               justifyContent: "center",
               alignItems: "center",
               height: "50%",
+              textShadow: "0px 0px 10px black",
+              padding: 10,
             }}
           />
         </Background>
