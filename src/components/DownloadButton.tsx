@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { File } from "../interfaces/file";
 import api from "../utils/api";
 import Loader from "./loader/loader";
+import DownloadLoader from "./loader/download_loader";
 
 const DownloadButton = ({
   file,
@@ -36,7 +37,7 @@ const DownloadButton = ({
       });
   };
   if (isLoading) {
-    return <Loader />;
+    return <DownloadLoader />;
   }
 
   return (
